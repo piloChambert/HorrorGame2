@@ -3,6 +3,7 @@ serialize = require "ser"
 require "level0"
 
 inventory = {}
+infoText = ""
 
 -- screen configuration
 canvasResolution = {width = 320, height = 180}
