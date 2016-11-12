@@ -1,5 +1,8 @@
 require "State"
 serialize = require "ser"
+require "level0"
+
+inventory = {}
 
 -- screen configuration
 canvasResolution = {width = 320, height = 180}
@@ -282,7 +285,7 @@ function love.load()
 
 	love.audio.setDistanceModel("exponent")
 
-	changeState(titleState)
+	changeState(level0State)
 
 	-- load the default font
 	local font = love.graphics.newImageFont("font.png"," !\"#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}")
