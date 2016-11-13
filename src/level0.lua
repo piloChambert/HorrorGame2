@@ -1,11 +1,8 @@
 levelState = State()
 
-saw = {
-	name = "saw",
-	image = love.graphics.newImage("saw.png")
-}
+require "Items"
 
-door = {
+local door = {
 	name = "door",
 	image = love.graphics.newImage("door.png"),
 	x = 100,
