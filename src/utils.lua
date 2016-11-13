@@ -16,3 +16,10 @@ function printOutlined(str, x, y, color, outlineColor)
 	love.graphics.setColor(unpack(color))	
     love.graphics.print(str, x, y)
 end
+
+function wait(time)
+    while time > 0 do
+        dt = coroutine.yield(true)
+        time = time - dt
+    end
+end

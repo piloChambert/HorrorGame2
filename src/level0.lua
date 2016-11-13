@@ -20,6 +20,7 @@ function removeItemFromInventory(item)
 end
 
 infoText = ""
+thread = nil
 
 require "Items"
 
@@ -53,7 +54,7 @@ local leftArm = {
 local rightArm = {
 	name = "right arm",
 	image = love.graphics.newImage("level0/RightArm.png"),
-	x = 180,
+	x = 160,
 	y = 105,
 	width = 12,
 	height = 12
@@ -62,7 +63,7 @@ local rightArm = {
 local rightFoot = {
 	name = "right foot",
 	image = love.graphics.newImage("level0/RightFoot.png"),
-	x = 180,
+	x = 170,
 	y = 105,
 	width = 12,
 	height = 12
@@ -95,12 +96,16 @@ local girl = {
 		height = 19,
 		use = function(self, item)
 			if item == saw and not self.off then 
-				self.off = true
-				self.name = "Girl's headless neck"
-				self.image = love.graphics.newImage("level0/HeadOff.png")
-				infoText = "You cut Girl's head!"
+				thread = coroutine.create(function(dt)
+					wait(2)
 
-				levelState:addObject(head)
+					self.off = true
+					self.name = "Girl's headless neck"
+					self.image = love.graphics.newImage("level0/HeadOff.png")
+					infoText = "You cut Girl's head!"
+
+					levelState:addObject(head)
+					end)
 				return true
 			end
 
@@ -274,7 +279,7 @@ function levelState:draw()
 	drawInventory()
 	printOutlined(infoText, 8, 8, {255, 0, 0, 255})
 
-	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.setColor(255, 255, 255, 127)
 
 	if selectedItem then
 		love.graphics.draw(selectedItem.image, selectedItem.x - 16, selectedItem.y - 8)
@@ -337,3 +342,12 @@ function levelState:mousepressed(x, y, button)
 	end
 end
 
+function levelState:update(dt)
+	if thread then
+		coroutine.resume(thread, dt)
+
+		if coroutine.status(thread) == 'dead' then
+			thread = nil
+		end
+	end
+end
