@@ -1,4 +1,4 @@
-level0State = State()
+levelState = State()
 
 saw = {
 	name = "saw",
@@ -44,7 +44,7 @@ function drawInventory()
 	end
 end
 
-function level0State:load()
+function levelState:load()
 	self.backgroundImage = love.graphics.newImage("Background_lvl0.png")
 
 	for i = 0, 20 do	
@@ -60,7 +60,7 @@ function level0State:load()
 	infoText = "New room, new nightmare..."
 end
 
-function level0State:draw()
+function levelState:draw()
 	State.draw(self)
 
 	for i, obj in ipairs(self.objects) do
@@ -75,14 +75,14 @@ function level0State:draw()
 	end
 end
 
-function level0State:mousemoved(x, y, dx, dy)
+function levelState:mousemoved(x, y, dx, dy)
 	if self.selectedItem then
 		self.selectedItem.x = x
 		self.selectedItem.y = y
 	end
 end
 
-function level0State:mousepressed(x, y, button)
+function levelState:mousepressed(x, y, button)
 	if button == 1 or button == "l" then
 		if y > 144 then
 			self.selectedItem = saw

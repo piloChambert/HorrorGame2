@@ -286,7 +286,7 @@ function love.load()
 
 	love.audio.setDistanceModel("exponent")
 
-	changeState(level0State)
+	changeState(levelState)
 
 	-- load the default font
 	local font = love.graphics.newImageFont("font.png"," !\"#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}")
