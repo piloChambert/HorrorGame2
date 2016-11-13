@@ -286,7 +286,7 @@ function love.load()
 	changeState(levelState)
 
 	-- load the default font
-	local font = love.graphics.newImageFont("font.png"," !\"#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}")
+	local font = love.graphics.newImageFont("font.png"," :\"#$%&`()*+,-./0123456789!;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}")
     font:setFilter("nearest", "nearest")
     love.graphics.setFont(font)
 end

@@ -1,6 +1,24 @@
 levelState = State()
 
 inventory = {}
+function addItemToInventory(item)
+	table.insert(inventory, item)
+end
+
+function removeItemFromInventory(item)
+	local idx = -1
+	for i, obj in ipairs(inventory) do
+		if obj == item then
+			idx = i
+			break
+		end
+	end
+
+	if idx ~= -1 then
+		table.remove(inventory, idx)
+	end
+end
+
 infoText = ""
 
 require "Items"
@@ -47,8 +65,7 @@ end
 function levelState:load()
 	self.backgroundImage = love.graphics.newImage("Background_lvl0.png")
 
-	self.text = "A saw"
-	self.selectedItem = nil
+	selectedItem = nil
 
 	self.objects = {}
 	table.insert(self.objects, door)
@@ -66,38 +83,53 @@ function levelState:draw()
 	drawInventory()
 	love.graphics.print(infoText, 0, 140)
 
-	if self.selectedItem then
-		love.graphics.draw(self.selectedItem.image, self.selectedItem.x - 16, self.selectedItem.y - 8)
+	if selectedItem then
+		love.graphics.draw(selectedItem.image, selectedItem.x - 16, selectedItem.y - 8)
 	end
 end
 
 function levelState:mousemoved(x, y, dx, dy)
-	if self.selectedItem then
-		self.selectedItem.x = x
-		self.selectedItem.y = y
+	if selectedItem then
+		selectedItem.x = x
+		selectedItem.y = y
 	end
 end
 
 function levelState:mousepressed(x, y, button)
 	if button == 1 or button == "l" then
-		if y > 144 and not self.selectedItem then
+		if y > 144 then
 			local itemIdx = math.floor(x / 32) + math.floor((y - 144) / 16) + 1
 			print(itemIdx)
 
-			self.selectedItem = inventory[itemIdx]
+			newItem = inventory[itemIdx]
 
-			if self.selectedItem then
-				self.selectedItem.x = x
-				self.selectedItem.y = y
+			-- if we click on an item 
+			if newItem then
+				-- if we don't have any item selected, select it
+				if not selectedItem then
+					selectedItem = newItem
+
+					if selectedItem then
+						selectedItem.x = x
+						selectedItem.y = y
+					end
+				else
+					-- else, combine item
+					local res = newItem:use(selectedItem)
+
+					if not res then
+						infoText = selectedItem.name .. " doesn't seems to work with " .. newItem.name .."."						
+					end
+				end
 			end
 		else
 			for i, obj in ipairs(self.objects) do
 				if testPointInQuad(x, y, obj.x, obj.y, obj.width, obj.height) then
-					local res = obj:use(self.selectedItem)
+					local res = obj:use(selectedItem)
 
 					if not res then
-						if self.selectedItem then
-							infoText = self.selectedItem.name .. " doesn't seems to work with " .. obj.name .."."
+						if selectedItem then
+							infoText = selectedItem.name .. " doesn't seems to work with " .. obj.name .."."
 						else
 							infoText = "You can't do anything with " .. obj.name .. "alone."
 						end
@@ -108,7 +140,7 @@ function levelState:mousepressed(x, y, button)
 	end
 
 	if button == 2 or button == "r" then
-		self.selectedItem = nil
+		selectedItem = nil
 	end
 end
 
