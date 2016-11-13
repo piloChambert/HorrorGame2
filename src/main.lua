@@ -1,3 +1,4 @@
+require "utils"
 require "State"
 serialize = require "ser"
 require "level0"
@@ -286,7 +287,7 @@ function love.load()
 	changeState(levelState)
 
 	-- load the default font
-	local font = love.graphics.newImageFont("font.png"," :\"#$%&`()*+,-./0123456789!;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}")
+	local font = love.graphics.newImageFont("classic_font.png"," !\"#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}")
     font:setFilter("nearest", "nearest")
     love.graphics.setFont(font)
 end

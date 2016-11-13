@@ -1,9 +1,18 @@
 saw = {
 	name = "Saw",
-	image = love.graphics.newImage("saw.png")
+	image = love.graphics.newImage("saw.png"),
+	width = 32,
+	height = 16
 }
 
 function saw:use(item)
+	if item == nil then
+		-- pickup
+		addItemToInventory(self)
+		levelState:removeObject(self)
+		return true
+	end
+
 	return false
 end
 
@@ -24,5 +33,14 @@ function jerrycan:use(item)
 end
 
 
-addItemToInventory(saw)
-addItemToInventory(jerrycan)
+--addItemToInventory(saw)
+--addItemToInventory(jerrycan)
+
+leftFoot = {
+	name = "left foot",
+	image = love.graphics.newImage("level0/LeftFoot.png"),
+}
+
+function leftFoot:use(item)
+	return false
+end
