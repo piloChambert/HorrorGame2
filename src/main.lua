@@ -2,9 +2,6 @@ require "State"
 serialize = require "ser"
 require "level0"
 
-inventory = {}
-infoText = ""
-
 -- screen configuration
 canvasResolution = {width = 320, height = 180}
 canvasScale = 1
@@ -324,11 +321,11 @@ function love.draw()
 end
 
 function love.mousemoved(x, y, dx, dy)
-	states[#states]:mousemoved((x - canvasOffset.x) / canvasScale, (y - canvasOffset.y) / canvasScale, dx, dy)
+	states[#states]:mousemoved(math.floor((x - canvasOffset.x) / canvasScale), math.floor((y - canvasOffset.y) / canvasScale), dx, dy)
 end
 
 function love.mousepressed(x, y, button)
-	states[#states]:mousepressed((x - canvasOffset.x) / canvasScale, (y - canvasOffset.y) / canvasScale, button)
+	states[#states]:mousepressed(math.floor((x - canvasOffset.x) / canvasScale), math.floor((y - canvasOffset.y) / canvasScale), button)
 end
 
 function love.keypressed(key)

@@ -1,5 +1,8 @@
 levelState = State()
 
+inventory = {}
+infoText = ""
+
 require "Items"
 
 local door = {
@@ -44,10 +47,6 @@ end
 function levelState:load()
 	self.backgroundImage = love.graphics.newImage("Background_lvl0.png")
 
-	for i = 0, 20 do	
-		table.insert(inventory, saw)
-	end
-
 	self.text = "A saw"
 	self.selectedItem = nil
 
@@ -68,7 +67,7 @@ function levelState:draw()
 	love.graphics.print(infoText, 0, 140)
 
 	if self.selectedItem then
-		love.graphics.draw(self.selectedItem.image, self.selectedItem.x, self.selectedItem.y)
+		love.graphics.draw(self.selectedItem.image, self.selectedItem.x - 16, self.selectedItem.y - 8)
 	end
 end
 
@@ -81,10 +80,16 @@ end
 
 function levelState:mousepressed(x, y, button)
 	if button == 1 or button == "l" then
-		if y > 144 then
-			self.selectedItem = saw
-			self.selectedItem.x = x
-			self.selectedItem.y = y
+		if y > 144 and not self.selectedItem then
+			local itemIdx = math.floor(x / 32) + math.floor((y - 144) / 16) + 1
+			print(itemIdx)
+
+			self.selectedItem = inventory[itemIdx]
+
+			if self.selectedItem then
+				self.selectedItem.x = x
+				self.selectedItem.y = y
+			end
 		else
 			for i, obj in ipairs(self.objects) do
 				if testPointInQuad(x, y, obj.x, obj.y, obj.width, obj.height) then
