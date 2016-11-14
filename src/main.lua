@@ -1,4 +1,5 @@
 require "utils"
+require "mouseCursor"
 require "State"
 serialize = require "ser"
 require "level0"
@@ -290,6 +291,8 @@ function love.load()
 	local font = love.graphics.newImageFont("classic_font.png"," !\"#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}")
     font:setFilter("nearest", "nearest")
     love.graphics.setFont(font)
+
+    love.mouse.setVisible(false)
 end
 
 function love.update(dt)
@@ -306,6 +309,15 @@ function love.draw()
     	states[#states]:draw()
 
 		love.graphics.setColor(255, 255, 255, 255)
+
+		-- draw the mouse
+		if currentMouseCursor then
+			mx, my = love.mouse.getPosition()
+			mx = math.floor((mx - canvasOffset.x) / canvasScale)
+			my = math.floor((my - canvasOffset.y) / canvasScale)
+
+			love.graphics.draw(currentMouseCursor.image, mx + currentMouseCursor.offset[1], my + currentMouseCursor.offset[2])
+		end
 
 		love.graphics.setCanvas()
 		love.graphics.draw(mainCanvas, canvasOffset.x, canvasOffset.y, 0, canvasScale, canvasScale)

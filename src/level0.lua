@@ -29,8 +29,8 @@ local door = {
 	image = love.graphics.newImage("level0/Door.png"),
 	x = 50,
 	y = 50,
-	width = 64,
-	height = 128
+	width = 34,
+	height = 56
 }
 
 local head = {
@@ -78,7 +78,8 @@ local chains = {
 	height = 0
 }
 
-local girl = {
+local girlScreamSound = love.audio.newSource("girl_scream1.ogg", "static")
+girl = {
 	body = {
 		name = "Girl's body",
 		image = love.graphics.newImage("level0/Body.png"),
@@ -94,23 +95,6 @@ local girl = {
 		y = 56,
 		width = 18,
 		height = 19,
-		use = function(self, item)
-			if item == saw and not self.off then 
-				thread = coroutine.create(function(dt)
-					wait(2)
-
-					self.off = true
-					self.name = "Girl's headless neck"
-					self.image = love.graphics.newImage("level0/HeadOff.png")
-					infoText = "You cut Girl's head!"
-
-					levelState:addObject(head)
-					end)
-				return true
-			end
-
-			return false
-		end
 	},
 	leftArm = {
 		name = "Girl's left arm",
@@ -119,19 +103,6 @@ local girl = {
 		y = 70,
 		width = 11,
 		height = 13,
-		use = function(self, item)
-			if item == saw and not self.off then 
-				self.off = true
-				self.name = "Girl's LArm"
-				self.image = love.graphics.newImage("level0/LeftArmOff.png")
-				infoText = "You cut Girl's left arm!"
-
-				levelState:addObject(leftArm)
-				return true
-			end
-
-			return false
-		end
 	},
 
 	rightArm = {
@@ -199,6 +170,70 @@ local girl = {
 		end
 	},
 }
+
+function girl.head:use(item)
+	if item == saw and not self.off then 
+		thread = coroutine.create(function(dt)
+			-- hide mouse and selected item
+			currentMouseCursor = nil
+			selectedItem = nil
+
+			saw.sound:play()
+
+			if not girl.head.off then
+				girlScreamSound:play()
+			end
+
+			wait(12.5)
+
+			self.off = true
+			self.name = "Girl's headless neck"
+			self.image = love.graphics.newImage("level0/HeadOff.png")
+			infoText = "You cut Girl's head!"
+
+			-- insert head object in the scene
+			levelState:addObject(head)
+
+			-- restore mouse
+			currentMouseCursor = pointerCursor
+			end)
+		return true
+	end
+
+	return false
+end
+
+function girl.leftArm:use(item)
+	if item == saw and not self.off then 
+		thread = coroutine.create(function(dt)
+			-- hide mouse and selected item
+			currentMouseCursor = nil
+			selectedItem = nil
+
+			saw.sound:play()
+
+			if not girl.head.off then
+				girlScreamSound:play()
+			end
+
+			wait(12.5)
+
+			self.off = true
+			self.name = "Girl's LArm"
+			self.image = love.graphics.newImage("level0/LeftArmOff.png")
+			infoText = "You cut Girl's left arm!"
+
+			-- insert head object in the scene
+			levelState:addObject(leftArm)
+
+			-- restore mouse
+			currentMouseCursor = pointerCursor
+			end)
+		return true
+	end
+
+	return false
+end
 
 function door:use(item)
 	if item == leftFoot then

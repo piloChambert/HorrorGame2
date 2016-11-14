@@ -2,7 +2,9 @@ saw = {
 	name = "Saw",
 	image = love.graphics.newImage("saw.png"),
 	width = 32,
-	height = 16
+	height = 16,
+
+	sound = love.audio.newSource("saw.ogg", "static")
 }
 
 function saw:use(item)
