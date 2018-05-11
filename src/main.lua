@@ -183,7 +183,7 @@ function saveSettings()
 end
 
 function loadSettings() 
-	if love.filesystem.exists("settings.lua") then
+	if love.filesystem.getInfo("settings.lua") then
 		local confChunk = love.filesystem.load("settings.lua")
 
 		local ok, result = pcall(confChunk)

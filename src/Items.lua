@@ -1,8 +1,6 @@
 saw = {
 	name = "Saw",
 	image = love.graphics.newImage("saw.png"),
-	width = 32,
-	height = 16,
 
 	sound = love.audio.newSource("saw.ogg", "static")
 }
@@ -22,6 +20,7 @@ jerrycan = {
 	name = "JerryCan",
 	image = love.graphics.newImage("jerrycan.png")
 }
+
 function jerrycan:use(item)
 	if item == saw then
 		removeItemFromInventory(jerrycan)
